@@ -1,0 +1,11 @@
+version: '2.1'
+
+services:    
+  sc_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sc_api
+    restart: always
+    ports:
+      - "4000:4000"
