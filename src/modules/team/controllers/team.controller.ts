@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, UnauthorizedException, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, UnauthorizedException, Put, Req } from '@nestjs/common';
 import { TeamService } from '../services/team.service';
 import { CreateTeamDto } from '../dto/create-team.dto';
 import { UpdateTeamDto } from '../dto/update-team.dto';
@@ -38,6 +38,19 @@ export class TeamController {
   @Put(':id')
   update(@Param('id') id: string, @Body() updateTeamDto: UpdateTeamDto) {
     return this.teamService.update(+id, updateTeamDto);
+  }
+
+  @Put('join/:id')
+  addUser(@Req() request: Request, @Param('id') id: string) {
+    const userId = request['user'].id;
+    return this.teamService.addUser(+id, +userId);
+  }
+
+  @Put('unjoin/:id')
+  removeUser(@Req() request: Request, @Param('id') id: string) {
+    const userId = request['user'].id;
+    console.log('userId', userId)
+    return this.teamService.removeUser(+id, +userId);
   }
 
   @Delete(':id')
