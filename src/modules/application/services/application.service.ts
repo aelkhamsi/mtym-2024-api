@@ -16,19 +16,20 @@ export class ApplicationService {
     private applicationRepository: Repository<Application>,
   ) {}
 
-  async create(createApplicationDto: CreateApplicationDto) {
+  async create(createApplicationDto: CreateApplicationDto, userId: number) {
+    // create application
     const application = await this.applicationRepository.create(
       createApplicationDto,
     );
     await this.applicationRepository.save(application);
 
-    // user
+    // update user
     const user = await this.userService.findOneById(
-      createApplicationDto.userId,
+      userId,
     );
     await this.userService.update(user?.id, { application });
 
-    // status
+    // create application status
     const applicationStatus = await this.applicationStatusService.create(
       application,
     );

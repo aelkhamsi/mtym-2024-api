@@ -90,22 +90,21 @@ export class ApplicationController {
     @Body() createApplicationDto: CreateApplicationDto,
     @Request() req,
   ) {
-    if (req['user'].id !== createApplicationDto.userId) {
-      throw new ForbiddenException();
-    }
+    const userId = req['user'].id;
 
-    const user = await this.userService.findOneById(req['user'].id);
+    const user = await this.userService.findOneById(userId);
     if (!user) {
-      throw new ForbiddenException();
+      throw new ForbiddenException('User does not exist');
     }
 
     const userApplication = user?.application;
     if (userApplication) {
-      await this.applicationService.delete(userApplication?.id);
+      throw new ForbiddenException('This user already have a submitted an application');
     }
 
     const application = await this.applicationService.create(
       createApplicationDto,
+      userId,
     );
 
     return {
@@ -125,7 +124,7 @@ export class ApplicationController {
     const application = await this.applicationService.findOneByUserId(userId);
 
     if (id !== application?.id) {
-      throw new ForbiddenException();
+      throw new ForbiddenException(`This user 'id: ${userId}') can not update this application (id: ${application?.id})`);
     }
 
     const update = await this.applicationService.update(

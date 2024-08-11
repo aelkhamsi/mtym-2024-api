@@ -1,89 +1,98 @@
 import {
-  IsDefined,
-  IsNotEmpty,
-  IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
 
 export class CreateApplicationDto {
   /* Personal informations */
-  @IsNumber()
-  @IsDefined()
-  userId: number;
-
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   firstName: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   lastName: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   dateOfBirth: Date;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   identityCardNumber: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   city: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   region: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   phoneNumber: string;
 
   @IsString()
-  @IsNotEmpty()
-  emergencyContactName: string;
+  @IsOptional()
+  guardianFullName: string;
 
   @IsString()
-  @IsNotEmpty()
-  emergencyContactPhoneNumber: string;
+  @IsOptional()
+  guardianPhoneNumber: string;
+
+  @IsString()
+  @IsOptional()
+  relationshipWithGuardian: string;
+
+  @IsString()
+  @IsOptional()
+  specialConditions: string;
 
   /* Education */
   @IsString()
-  @IsNotEmpty()
-  lastYearEducationLevel: string;
+  @IsOptional()
+  educationLevel: string;
 
   @IsString()
-  @IsNotEmpty()
-  educationProgram: string;
+  @IsOptional()
+  educationField: string;
 
   @IsString()
-  @IsNotEmpty()
-  establishment: string;
+  @IsOptional()
+  highschool: string;
 
   @IsString()
-  @IsNotEmpty()
-  fieldOfStudy: string;
+  @IsOptional()
+  averageGrade: string;
+
+  @IsString()
+  @IsOptional()
+  mathAverageGrade: string;
+
+  @IsString()
+  @IsOptional()
+  ranking: string;
+
+  @IsString()
+  @IsOptional()
+  mathRanking: string;
 
   /* Competition */
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   hasPreviouslyParticipated: string;
-
+  
   @IsString()
   @IsOptional()
   previousCompetitions: string;
 
   @IsString()
-  @IsNotEmpty()
-  hasPreviouslyParticipatedInMmc: string;
+  @IsOptional()
+  hasPreviouslyParticipatedInMtym: string;
 
   @IsString()
   @IsOptional()
-  previousResultsInMmc: string;
-
-  @IsString()
-  @IsNotEmpty()
   motivations: string;
 
   @IsString()
@@ -101,9 +110,13 @@ export class CreateApplicationDto {
 
   @IsString()
   @IsOptional()
+  gradesUrl: string;
+
+  @IsString()
+  @IsOptional()
   regulationsUrl: string;
 
   @IsString()
   @IsOptional()
-  gradesUrl: string;
+  parentalAuthorizationUrl: string;
 }

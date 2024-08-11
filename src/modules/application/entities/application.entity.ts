@@ -37,7 +37,7 @@ export class Application {
   @Column({ type: 'varchar', default: '' })
   lastName: string;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'timestamp', nullable: true })
   dateOfBirth: Date;
 
   @Column({ type: 'varchar', default: '' })
@@ -96,7 +96,7 @@ export class Application {
   @Column({ type: 'varchar', default: '' })
   hasPreviouslyParticipatedInMtym: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   motivations: string;
 
   @Column({ type: 'text', nullable: true })
