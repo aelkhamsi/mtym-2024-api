@@ -53,44 +53,38 @@ export class Application {
   phoneNumber: string;
 
   @Column({ type: 'varchar', default: '' })
-  emergencyContactName: string;
+  guardianFullName: string;
 
   @Column({ type: 'varchar', default: '' })
-  emergencyContactPhoneNumber: string;
+  guardianPhoneNumber: string;
+
+  @Column({ type: 'varchar', default: '' })
+  relationshipWithGuardian: string;
+
+  @Column({ type: 'text', nullable: true })
+  specialConditions: string;
 
   /* Education */
   @Column({ type: 'varchar', default: '' })
-  lastYearEducationLevel: string;
+  educationLevel: string;
 
   @Column({ type: 'varchar', default: '' })
-  educationProgram: string;
+  educationField: string;
 
   @Column({ type: 'varchar', default: '' })
-  establishment: string;
-
-  @Column({ type: 'text' })
-  fieldOfStudy: string;
+  highschool: string;
 
   @Column({ type: 'varchar', default: '' })
-  cpgeGradeTrimesterOne: string;
+  averageGrade: string;
 
   @Column({ type: 'varchar', default: '' })
-  cpgeGradeTrimesterTwo: string;
+  mathAverageGrade: string;
 
   @Column({ type: 'varchar', default: '' })
-  cpgeRankingTrimesterOne: string;
+  ranking: string;
 
   @Column({ type: 'varchar', default: '' })
-  cpgeRankingTrimesterTwo: string;
-
-  @Column({ type: 'varchar', default: '' })
-  nonCpgeAverageThreeBestScienceGrades: string;
-
-  @Column({ type: 'varchar', default: '' })
-  nonCpgeAverageScienceGrades: string;
-
-  @Column({ type: 'varchar', default: '' })
-  nonCpgeOverallAverage: string;
+  mathRanking: string;
 
   /* Competition */
   @Column({ type: 'varchar', default: '' })
@@ -100,10 +94,7 @@ export class Application {
   previousCompetitions: string;
 
   @Column({ type: 'varchar', default: '' })
-  hasPreviouslyParticipatedInMmc: string;
-
-  @Column({ type: 'text', nullable: true })
-  previousResultsInMmc: string;
+  hasPreviouslyParticipatedInMtym: string;
 
   @Column({ type: 'text' })
   motivations: string;
@@ -119,10 +110,13 @@ export class Application {
   schoolCertificateUrl: string;
 
   @Column({ type: 'varchar', nullable: true })
+  gradesUrl: string;
+
+  @Column({ type: 'varchar', nullable: true })
   regulationsUrl: string;
 
   @Column({ type: 'varchar', nullable: true })
-  gradesUrl: string;
+  parentalAuthorizationUrl: string;
 
   /* createAt & updatedAt */
   @CreateDateColumn({

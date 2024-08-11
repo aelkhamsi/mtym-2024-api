@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 
 export type Status =
+  | 'DRAFT' 
   | 'PENDING'
   | 'NOTIFIED'
   | 'UPDATED'
@@ -18,7 +19,7 @@ export type Status =
   | 'REFUSED'
   | 'WAITLIST';
 
-export type FileStatus = 'PENDING' | 'VALID' | 'NOT_VALID';
+export type FileStatus = 'DRAFT' | 'PENDING' | 'VALID' | 'NOT_VALID';
 
 @Entity({ name: 'applications_status' })
 export class ApplicationStatus {
@@ -35,20 +36,20 @@ export class ApplicationStatus {
   application: Application;
 
   /* Global status */
-  @Column({ type: 'varchar', default: 'PENDING' })
+  @Column({ type: 'varchar', default: 'DRAFT' })
   status: Status;
 
   /* Files status */
-  @Column({ type: 'varchar', default: 'PENDING' })
+  @Column({ type: 'varchar', default: 'DRAFT' })
   cnieStatus: FileStatus;
 
-  @Column({ type: 'varchar', default: 'PENDING' })
+  @Column({ type: 'varchar', default: 'DRAFT' })
   schoolCertificateStatus: FileStatus;
 
-  @Column({ type: 'varchar', default: 'PENDING' })
+  @Column({ type: 'varchar', default: 'DRAFT' })
   regulationsStatus: FileStatus;
 
-  @Column({ type: 'varchar', default: 'PENDING' })
+  @Column({ type: 'varchar', default: 'DRAFT' })
   gradesStatus: FileStatus;
 
   /* createAt & updatedAt */
