@@ -49,7 +49,7 @@ export class AuthController {
     const { username, password } = loginAdminDto;
     return this.authService.loginAdmin(username, password);
   }
-
+  
   @HttpCode(HttpStatus.OK)
   @Post('signup/admin')
   @UseGuards(RolesGuard)
