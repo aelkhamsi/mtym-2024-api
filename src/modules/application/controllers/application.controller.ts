@@ -24,7 +24,6 @@ import { UserService } from 'src/modules/user/services/user.service';
 import { ApplicationStatusService } from '../services/application-status.service';
 import { UpdateApplicationStatusDto } from '../dto/update-application-status.dto';
 import { SerializedUser } from 'src/modules/user/entities/serialized-user';
-import { Status } from '../entities/application-status.entity';
 
 @Controller('mtym-api/applications')
 export class ApplicationController {
@@ -99,7 +98,9 @@ export class ApplicationController {
 
     const userApplication = user?.application;
     if (userApplication) {
-      throw new ForbiddenException('This user already have a submitted an application');
+      throw new ForbiddenException(
+        'This user already have a submitted an application',
+      );
     }
 
     const application = await this.applicationService.create(
@@ -124,7 +125,9 @@ export class ApplicationController {
     const application = await this.applicationService.findOneByUserId(userId);
 
     if (id !== application?.id) {
-      throw new ForbiddenException(`This user 'id: ${userId}') can not update this application (id: ${application?.id})`);
+      throw new ForbiddenException(
+        `This user 'id: ${userId}') can not update this application (id: ${application?.id})`,
+      );
     }
 
     const update = await this.applicationService.update(

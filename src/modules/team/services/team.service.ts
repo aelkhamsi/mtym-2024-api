@@ -16,13 +16,13 @@ export class TeamService {
 
   async create(createTeamDto: CreateTeamDto) {
     const team = await this.teamRepository.create(createTeamDto);
-    return await this.teamRepository.save(team);
+    return this.teamRepository.save(team);
   }
 
   findAll() {
     return this.teamRepository
       .createQueryBuilder('team')
-      .leftJoinAndSelect("team.users", "user")
+      .leftJoinAndSelect('team.users', 'user')
       .leftJoinAndSelect('user.application', 'application')
       .leftJoinAndSelect('application.status', 'status')
       .getMany();
@@ -31,7 +31,7 @@ export class TeamService {
   findOneById(id: number) {
     return this.teamRepository
       .createQueryBuilder('team')
-      .leftJoinAndSelect("team.users", "user")
+      .leftJoinAndSelect('team.users', 'user')
       .leftJoinAndSelect('user.application', 'application')
       .leftJoinAndSelect('application.status', 'status')
       .where('team.id = :id', { id })
@@ -41,31 +41,29 @@ export class TeamService {
   findOneByName(name: string) {
     return this.teamRepository
       .createQueryBuilder('team')
-      .leftJoinAndSelect("team.users", "user")
+      .leftJoinAndSelect('team.users', 'user')
       .leftJoinAndSelect('user.application', 'application')
       .leftJoinAndSelect('application.status', 'status')
       .where('team.name = :name', { name })
       .getOne();
   }
 
-
   async addUser(id: number, userId: number) {
     const user = await this.userService.findOneById(userId);
-    const team = await this.findOneById(id) as Team;
+    const team = (await this.findOneById(id)) as Team;
     if (!user || !team) {
-      throw new NotFoundException("The user or team does not exist");
+      throw new NotFoundException('The user or team does not exist');
     }
     team.users = [...team.users, user];
     return await this.teamRepository.save(team);
   }
 
   async removeUser(id: number, userId: number) {
-    const team = await this.findOneById(id) as Team;
+    const team = (await this.findOneById(id)) as Team;
     if (!team) {
-      throw new NotFoundException("The team does not exist");
+      throw new NotFoundException('The team does not exist');
     }
-    console.log('team.users', team.users)
-    team.users = team.users.filter(user => user?.id != userId);
+    team.users = team.users.filter((user) => user?.id != userId);
     return await this.teamRepository.save(team);
   }
 

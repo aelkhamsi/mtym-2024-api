@@ -24,9 +24,7 @@ export class ApplicationService {
     await this.applicationRepository.save(application);
 
     // update user
-    const user = await this.userService.findOneById(
-      userId,
-    );
+    const user = await this.userService.findOneById(userId);
     await this.userService.update(user?.id, { application });
 
     // create application status

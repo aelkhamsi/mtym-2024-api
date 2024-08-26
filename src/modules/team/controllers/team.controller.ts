@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, UnauthorizedException, Put, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  NotFoundException,
+  UnauthorizedException,
+  Put,
+  Req,
+} from '@nestjs/common';
 import { TeamService } from '../services/team.service';
 import { CreateTeamDto } from '../dto/create-team.dto';
 import { UpdateTeamDto } from '../dto/update-team.dto';
@@ -13,16 +25,30 @@ export class TeamController {
     const { name } = createTeamDto;
     const cleanName = cleanString(name);
 
-    const teams = await this.findAll();
-    const teamExists = teams.find(team => cleanString(team?.name) == cleanName)
-    if (teamExists) throw new UnauthorizedException('Team with this name already exists');
+    const teams = await this.teamService.findAll();
+    const teamExists = teams?.find(
+      (team) => cleanString(team?.name) == cleanName,
+    );
+    if (teamExists) {
+      throw new UnauthorizedException('Team with this name already exists');
+    }
 
-    return this.teamService.create(createTeamDto);
+    const team = await this.teamService.create(createTeamDto);
+
+    return {
+      team: team,
+      statusCode: 200,
+    };
   }
 
   @Get()
-  findAll() {
-    return this.teamService.findAll();
+  async findAll() {
+    const teams = await this.teamService.findAll();
+
+    return {
+      teams: teams,
+      statusCode: 200,
+    };
   }
 
   @Get(':id')
@@ -31,26 +57,46 @@ export class TeamController {
     if (!team) {
       throw new NotFoundException();
     }
-    
-    return team;
+
+    return {
+      team: team,
+      statusCode: 200,
+    };
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateTeamDto: UpdateTeamDto) {
-    return this.teamService.update(+id, updateTeamDto);
+  async update(@Param('id') id: string, @Body() updateTeamDto: UpdateTeamDto) {
+    const update = await this.teamService.update(+id, updateTeamDto);
+
+    return {
+      id: id,
+      update: update,
+      statusCode: 200,
+    };
   }
 
   @Put('join/:id')
-  addUser(@Req() request: Request, @Param('id') id: string) {
+  async addUser(@Req() request: Request, @Param('id') id: string) {
     const userId = request['user'].id;
-    return this.teamService.addUser(+id, +userId);
+    const update = await this.teamService.addUser(+id, +userId);
+
+    return {
+      id: id,
+      update: update,
+      statusCode: 200,
+    };
   }
 
   @Put('unjoin/:id')
-  removeUser(@Req() request: Request, @Param('id') id: string) {
+  async removeUser(@Req() request: Request, @Param('id') id: string) {
     const userId = request['user'].id;
-    console.log('userId', userId)
-    return this.teamService.removeUser(+id, +userId);
+    const update = await this.teamService.removeUser(+id, +userId);
+
+    return {
+      id: id,
+      update: update,
+      statusCode: 200,
+    };
   }
 
   @Delete(':id')

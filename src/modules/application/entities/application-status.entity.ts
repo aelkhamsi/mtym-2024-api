@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 
 export type Status =
-  | 'DRAFT' 
+  | 'DRAFT'
   | 'PENDING'
   | 'NOTIFIED'
   | 'UPDATED'
