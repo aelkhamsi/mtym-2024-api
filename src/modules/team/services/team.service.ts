@@ -5,6 +5,7 @@ import { Team } from '../entities/team.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserService } from 'src/modules/user/services/user.service';
+import { SerializedUser } from 'src/modules/user/entities/serialized-user';
 
 @Injectable()
 export class TeamService {
@@ -14,14 +15,18 @@ export class TeamService {
     private teamRepository: Repository<Team>,
   ) {}
 
-  async create(createTeamDto: CreateTeamDto) {
+  async create(createTeamDto: CreateTeamDto, userId: number) {
     const team = await this.teamRepository.create(createTeamDto);
+    const leader = await this.userService.findOneById(userId);
+    team.leader = new SerializedUser(leader);
+
     return this.teamRepository.save(team);
   }
 
   findAll() {
     return this.teamRepository
       .createQueryBuilder('team')
+      .leftJoinAndSelect('team.leader', 'leader')
       .leftJoinAndSelect('team.users', 'user')
       .leftJoinAndSelect('user.application', 'application')
       .leftJoinAndSelect('application.status', 'status')
@@ -31,6 +36,7 @@ export class TeamService {
   findOneById(id: number) {
     return this.teamRepository
       .createQueryBuilder('team')
+      .leftJoinAndSelect('team.leader', 'leader')
       .leftJoinAndSelect('team.users', 'user')
       .leftJoinAndSelect('user.application', 'application')
       .leftJoinAndSelect('application.status', 'status')
@@ -41,6 +47,7 @@ export class TeamService {
   findOneByName(name: string) {
     return this.teamRepository
       .createQueryBuilder('team')
+      .leftJoinAndSelect('team.leader', 'leader')
       .leftJoinAndSelect('team.users', 'user')
       .leftJoinAndSelect('user.application', 'application')
       .leftJoinAndSelect('application.status', 'status')

@@ -3,7 +3,9 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -24,6 +26,10 @@ export class Team {
 
   @Column({ type: 'varchar', default: '' })
   mentorFullname: string;
+
+  @ManyToOne(() => User)
+  @JoinColumn()
+  leader: User;
 
   @OneToMany(() => User, (user) => user.team)
   @JoinColumn()

@@ -1,7 +1,4 @@
-import {
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class CreateApplicationDto {
   /* Personal informations */
@@ -82,7 +79,7 @@ export class CreateApplicationDto {
   @IsString()
   @IsOptional()
   hasPreviouslyParticipated: string;
-  
+
   @IsString()
   @IsOptional()
   previousCompetitions: string;

@@ -15,13 +15,18 @@ import { TeamService } from '../services/team.service';
 import { CreateTeamDto } from '../dto/create-team.dto';
 import { UpdateTeamDto } from '../dto/update-team.dto';
 import { cleanString } from 'src/utils/string';
+import { UserService } from 'src/modules/user/services/user.service';
+import { SerializedUser } from 'src/modules/user/entities/serialized-user';
 
 @Controller('mtym-api/teams')
 export class TeamController {
-  constructor(private readonly teamService: TeamService) {}
+  constructor(
+    private readonly teamService: TeamService,
+    private readonly userService: UserService,
+  ) {}
 
   @Post()
-  async create(@Body() createTeamDto: CreateTeamDto) {
+  async create(@Req() request: Request, @Body() createTeamDto: CreateTeamDto) {
     const { name } = createTeamDto;
     const cleanName = cleanString(name);
 
@@ -33,10 +38,15 @@ export class TeamController {
       throw new UnauthorizedException('Team with this name already exists');
     }
 
-    const team = await this.teamService.create(createTeamDto);
+    const userId = request['user'].id;
+    const team = await this.teamService.create(createTeamDto, userId);
 
     return {
-      team: team,
+      team: {
+        ...team,
+        leader: team?.leader ? new SerializedUser(team?.leader) : team?.leader,
+        users: team?.users.map((user) => new SerializedUser(user)),
+      },
       statusCode: 200,
     };
   }
@@ -46,7 +56,15 @@ export class TeamController {
     const teams = await this.teamService.findAll();
 
     return {
-      teams: teams,
+      teams: teams.map((team) => {
+        return {
+          ...team,
+          leader: team?.leader
+            ? new SerializedUser(team?.leader)
+            : team?.leader,
+          users: team?.users.map((user) => new SerializedUser(user)),
+        };
+      }),
       statusCode: 200,
     };
   }
@@ -59,7 +77,11 @@ export class TeamController {
     }
 
     return {
-      team: team,
+      team: {
+        ...team,
+        leader: team?.leader ? new SerializedUser(team?.leader) : team?.leader,
+        users: team?.users.map((user) => new SerializedUser(user)),
+      },
       statusCode: 200,
     };
   }

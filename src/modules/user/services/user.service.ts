@@ -32,6 +32,8 @@ export class UserService {
       .createQueryBuilder('user')
       .where('user.id = :id', { id })
       .leftJoinAndSelect('user.team', 'team')
+      .leftJoinAndSelect('team.users', 'users')
+      .leftJoinAndSelect('team.leader', 'leader')
       .leftJoinAndSelect('user.application', 'application')
       .leftJoinAndSelect('application.status', 'status')
       .getOne();
