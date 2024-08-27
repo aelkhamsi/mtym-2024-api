@@ -45,7 +45,7 @@ export class TeamController {
       team: {
         ...team,
         leader: team?.leader ? new SerializedUser(team?.leader) : team?.leader,
-        users: team?.users.map((user) => new SerializedUser(user)),
+        users: team?.users?.map((user) => new SerializedUser(user)),
       },
       statusCode: 200,
     };
@@ -62,7 +62,7 @@ export class TeamController {
           leader: team?.leader
             ? new SerializedUser(team?.leader)
             : team?.leader,
-          users: team?.users.map((user) => new SerializedUser(user)),
+          users: team?.users?.map((user) => new SerializedUser(user)),
         };
       }),
       statusCode: 200,
@@ -80,7 +80,7 @@ export class TeamController {
       team: {
         ...team,
         leader: team?.leader ? new SerializedUser(team?.leader) : team?.leader,
-        users: team?.users.map((user) => new SerializedUser(user)),
+        users: team?.users?.map((user) => new SerializedUser(user)),
       },
       statusCode: 200,
     };
