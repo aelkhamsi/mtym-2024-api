@@ -13,7 +13,7 @@ export class MailService {
   async sendResetPasswordEmail(user: User, token: string) {
     const link =
       this.configService.get('NODE_ENV') === 'production'
-        ? `https://mmc.mathmaroc.org/en/reset-password?token=${token}`
+        ? `https://mtym.mathmaroc.org/en/reset-password?token=${token}`
         : `http://localhost:3001/en/reset-password?token=${token}`;
 
     await this.mailerService.sendMail({
