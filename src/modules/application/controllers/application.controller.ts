@@ -150,15 +150,15 @@ export class ApplicationController {
     };
   }
 
-  @Put('status/:id')
+  @Put('status/:applicationId')
   @HttpCode(200)
-  @UseGuards(RolesGuard)
-  @Roles(ADMIN_ROLE)
   async updateStatus(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('applicationId', ParseIntPipe) applicationId: number,
     @Body() updateApplicationStatusDto: UpdateApplicationStatusDto,
   ) {
-    const application = await this.applicationService.findOneById(id);
+    const application = await this.applicationService.findOneById(
+      applicationId,
+    );
     if (!application) {
       throw new NotFoundException();
     }
@@ -169,7 +169,7 @@ export class ApplicationController {
     );
 
     return {
-      id: id,
+      id: applicationId,
       update: update,
       statusCode: 200,
     };
