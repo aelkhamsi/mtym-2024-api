@@ -86,6 +86,9 @@ export class Application {
   @Column({ type: 'varchar', default: '' })
   mathRanking: string;
 
+  @Column({ type: 'varchar', default: '' })
+  numberOfStudentsInClass: string;
+
   /* Competition */
   @Column({ type: 'varchar', default: '' })
   hasPreviouslyParticipated: string;

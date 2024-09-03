@@ -75,6 +75,10 @@ export class CreateApplicationDto {
   @IsOptional()
   mathRanking: string;
 
+  @IsString()
+  @IsOptional()
+  numberOfStudentsInClass: string;
+
   /* Competition */
   @IsString()
   @IsOptional()
