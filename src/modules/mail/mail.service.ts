@@ -13,13 +13,13 @@ export class MailService {
   async sendResetPasswordEmail(user: User, token: string) {
     const link =
       this.configService.get('NODE_ENV') === 'production'
-        ? `https://mtym.mathmaroc.org/en/reset-password?token=${token}`
-        : `http://localhost:3001/en/reset-password?token=${token}`;
+        ? `https://mtym.mathmaroc.org/fr/reset-password?token=${token}`
+        : `http://localhost:3000/fr/reset-password?token=${token}`;
 
     await this.mailerService.sendMail({
       to: user.email,
       // from: '"Support Team" <support@example.com>', // override default from
-      subject: 'Math&Maroc Competition | Reset your password',
+      subject: 'MTYM | Reset your password',
       template: './reset-password',
       context: {
         firstName: user.firstName,
