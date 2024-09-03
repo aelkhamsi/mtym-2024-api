@@ -4,7 +4,7 @@ services:
   # MySQL database service
   db:
     image: mysql
-    container_name: db
+    container_name: db_mtym
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
@@ -17,7 +17,7 @@ services:
   # phpMyAdmin service
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
+    container_name: phpmyadmin_mtym
     links:
       - db
     environment:
@@ -31,7 +31,7 @@ services:
   # Node.js API service
   api:
     image: node
-    container_name: api
+    container_name: api_mtym
     restart: always
     depends_on:
       - db

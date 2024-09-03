@@ -16,6 +16,7 @@ import { CreateTeamDto } from '../dto/create-team.dto';
 import { UpdateTeamDto } from '../dto/update-team.dto';
 import { cleanString } from 'src/utils/string';
 import { SerializedUser } from 'src/modules/user/entities/serialized-user';
+import { RemoveUserDto } from '../dto/remove-user.dto';
 
 @Controller('mtym-api/teams')
 export class TeamController {
@@ -106,8 +107,12 @@ export class TeamController {
   }
 
   @Put('unjoin/:id')
-  async removeUser(@Req() request: Request, @Param('id') id: string) {
-    const userId = request['user'].id;
+  async removeUser(
+    @Req() request: Request,
+    @Param('id') id: string,
+    @Body() removeUserDto: RemoveUserDto,
+  ) {
+    const userId = removeUserDto?.userId ?? request['user'].id;
     const update = await this.teamService.removeUser(+id, +userId);
 
     return {
