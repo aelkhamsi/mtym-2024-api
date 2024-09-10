@@ -17,6 +17,7 @@ import { UpdateTeamDto } from '../dto/update-team.dto';
 import { cleanString } from 'src/utils/string';
 import { SerializedUser } from 'src/modules/user/entities/serialized-user';
 import { RemoveUserDto } from '../dto/remove-user.dto';
+import { ChangeLeaderDto } from '../dto/change-leader.dto';
 
 @Controller('mtym-api/teams')
 export class TeamController {
@@ -94,30 +95,42 @@ export class TeamController {
     };
   }
 
-  @Put('join/:id')
-  async addUser(@Req() request: Request, @Param('id') id: string) {
+  @Put('join/:teamId')
+  async addUser(@Req() request: Request, @Param('teamId') teamId: string) {
     const userId = request['user'].id;
-    const update = await this.teamService.addUser(+id, +userId);
+    await this.teamService.addUser(+teamId, +userId);
 
     return {
-      id: id,
-      update: update,
+      id: teamId,
       statusCode: 200,
     };
   }
 
-  @Put('unjoin/:id')
+  @Put('unjoin/:teamId')
   async removeUser(
     @Req() request: Request,
-    @Param('id') id: string,
+    @Param('teamId') teamId: string,
     @Body() removeUserDto: RemoveUserDto,
   ) {
     const userId = removeUserDto?.userId ?? request['user'].id;
-    const update = await this.teamService.removeUser(+id, +userId);
+    await this.teamService.removeUser(+teamId, +userId);
 
     return {
-      id: id,
-      update: update,
+      id: teamId,
+      statusCode: 200,
+    };
+  }
+
+  @Put('change-leader/:teamId')
+  async changeLeader(
+    @Param('teamId') teamId: string,
+    @Body() changeLeaderDto: ChangeLeaderDto,
+  ) {
+    const newLeaderId = changeLeaderDto.newLeaderId;
+    await this.teamService.changeLeader(+teamId, +newLeaderId);
+
+    return {
+      id: teamId,
       statusCode: 200,
     };
   }

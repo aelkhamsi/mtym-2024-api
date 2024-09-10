@@ -62,7 +62,8 @@ export class TeamService {
       throw new NotFoundException('The user or team does not exist');
     }
     team.users = [...team.users, user];
-    return await this.teamRepository.save(team);
+    await this.teamRepository.save(team);
+    return;
   }
 
   async removeUser(id: number, userId: number) {
@@ -71,7 +72,24 @@ export class TeamService {
       throw new NotFoundException('The team does not exist');
     }
     team.users = team.users.filter((user) => user?.id != userId);
-    return await this.teamRepository.save(team);
+    await this.teamRepository.save(team);
+    return;
+  }
+
+  async changeLeader(teamId: number, newLeaderId: number) {
+    const team = (await this.findOneById(teamId)) as Team;
+    if (!team) {
+      throw new NotFoundException('The team does not exist');
+    }
+
+    const user = await this.userService.findOneById(newLeaderId);
+    if (!user) {
+      throw new NotFoundException('The chosen new leader does not exist');
+    }
+
+    team.leader = user;
+    await this.teamRepository.save(team);
+    return;
   }
 
   update(id: number, updateTeamDto: UpdateTeamDto) {
