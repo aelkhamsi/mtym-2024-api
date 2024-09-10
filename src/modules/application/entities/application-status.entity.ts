@@ -36,21 +36,24 @@ export class ApplicationStatus {
   application: Application;
 
   /* Global status */
-  @Column({ type: 'varchar', default: 'DRAFT' })
+  @Column({ type: 'varchar', default: 'PENDING' })
   status: Status;
 
   /* Files status */
-  @Column({ type: 'varchar', default: 'DRAFT' })
+  @Column({ type: 'varchar', default: 'PENDING' })
   cnieStatus: FileStatus;
 
-  @Column({ type: 'varchar', default: 'DRAFT' })
+  @Column({ type: 'varchar', default: 'PENDING' })
   schoolCertificateStatus: FileStatus;
 
-  @Column({ type: 'varchar', default: 'DRAFT' })
+  @Column({ type: 'varchar', default: 'PENDING' })
   regulationsStatus: FileStatus;
 
-  @Column({ type: 'varchar', default: 'DRAFT' })
+  @Column({ type: 'varchar', default: 'PENDING' })
   gradesStatus: FileStatus;
+
+  @Column({ type: 'varchar', default: 'PENDING' })
+  parentalAuthorizationStatus: FileStatus;
 
   /* createAt & updatedAt */
   @CreateDateColumn({
