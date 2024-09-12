@@ -1,7 +1,8 @@
 import {
+  educationFieldLabels,
   educationLevelLabels,
-  educationProgramLabels,
   regionLabels,
+  relationshipWithGuardianLabels,
 } from '../labels';
 
 export const columns = [
@@ -13,56 +14,29 @@ export const columns = [
   { header: 'CNIE', key: 'cnie', width: 12 },
   { header: 'City', key: 'city', width: 15 },
   { header: 'Region', key: 'region', width: 20 },
-  { header: 'Phone number', key: 'phone-number', width: 17 },
+  { header: 'Phone number', key: 'phone-number', width: 20 },
+  { header: 'Guardian Full Name', key: 'guardian-full-name', width: 25 },
+  { header: 'Guardian Phone Number', key: 'guardian-phone-number', width: 25 },
   {
-    header: 'Emergency contact full name',
-    key: 'emergency-contact-full-name',
+    header: 'Relationship With Guardian',
+    key: 'relationship-with-guardian',
     width: 20,
   },
+  { header: 'Special conditions', key: 'special conditions', width: 30 },
+
+  { header: 'Education level', key: 'education-level', width: 25 },
+  { header: 'Education field', key: 'education-field', width: 25 },
+  { header: 'Highschool', key: 'highschool', width: 20 },
+  { header: 'Average grade', key: 'average-grade', width: 15 },
+  { header: 'Math Average grade', key: 'math-average-grade', width: 15 },
+  { header: 'Ranking', key: 'ranking', width: 15 },
+  { header: 'Math Ranking', key: 'math-ranking', width: 15 },
   {
-    header: 'Emergency contact phone number',
-    key: 'emergency-contact-phone-number',
-    width: 20,
-  },
-  { header: 'Education level', key: 'education-level', width: 10 },
-  { header: 'Education program', key: 'education-program', width: 20 },
-  { header: 'School / University', key: 'establishment', width: 20 },
-  { header: 'Field of Study', key: 'field-of-study', width: 20 },
-  {
-    header: '[cpge] Math grade trimester 1',
-    key: 'cpge-math-grade-1',
+    header: 'Number of students in class',
+    key: 'number-of-students',
     width: 15,
   },
-  {
-    header: '[cpge] Math grade trimester 2',
-    key: 'cpge-math-grade-2',
-    width: 15,
-  },
-  {
-    header: '[cpge] Math ranking trimester 1',
-    key: 'cpge-math-ranking-1',
-    width: 15,
-  },
-  {
-    header: '[cpge] Math ranking trimester 2',
-    key: 'cpge-math-ranking-2',
-    width: 15,
-  },
-  {
-    header: '[not cpge] Average grade 3 best scientific subjects',
-    key: 'noncpge-average-three-best-scientific-subjects',
-    width: 15,
-  },
-  {
-    header: '[not cpge] Average all scientific subjects',
-    key: 'noncpge-average-scientific-subjects',
-    width: 15,
-  },
-  {
-    header: '[not cpge] Average Overall',
-    key: 'noncpge-overall-average',
-    width: 15,
-  },
+
   {
     header: 'Have you participated in competitions before ?',
     key: 'has-previously-participated',
@@ -70,17 +44,22 @@ export const columns = [
   },
   { header: 'Achieved result', key: 'achieved-result', width: 20 },
   {
-    header: 'Have you participated in MMC before ?',
+    header: 'Have you participated in MTYM before ?',
     key: 'has-previously-participated-in-mmc',
     width: 15,
   },
-  { header: 'MMC ranking', key: 'mmc-ranking', width: 20 },
   { header: 'Motivations', key: 'id', width: 30 },
   { header: 'Comments', key: 'id', width: 30 },
+
   { header: 'CNIE', key: 'cnie', width: 10 },
   { header: 'School certificate', key: 'school-certificate', width: 10 },
   { header: 'Grades', key: 'grades', width: 10 },
   { header: 'Regulations', key: 'regulations', width: 10 },
+  {
+    header: 'Parental authorization',
+    key: 'parental-authorization',
+    width: 10,
+  },
   { header: 'Status', key: 'status', width: 15 },
 ];
 
@@ -98,27 +77,25 @@ export const rowFactory = (applications: any[], configService) => {
     city: application?.city,
     region: regionLabels[application?.region],
     phoneNumber: application?.phoneNumber,
-    emergencyContactName: application?.emergencyContactName,
-    emergencyContactPhoneNumber: application?.emergencyContactPhoneNumber,
+    guardianFullName: application?.guardianFullName,
+    guardianPhoneNumber: application?.guardianPhoneNumber,
+    relationshipWithGuardian:
+      relationshipWithGuardianLabels[application?.relationshipWithGuardian],
+    specialConditions: application?.specialConditions,
 
-    lastYearEducationLevel:
-      educationLevelLabels[application?.lastYearEducationLevel],
-    educationProgram: educationProgramLabels[application?.educationProgram],
-    establishment: application?.establishment,
-    fieldOfStudy: application?.fieldOfStudy,
-    cpgeGradeTrimesterOne: application?.cpgeGradeTrimesterOne,
-    cpgeGradeTrimesterTwo: application?.cpgeGradeTrimesterTwo,
-    cpgeRankingTrimesterOne: application?.cpgeRankingTrimesterOne,
-    cpgeRankingTrimesterTwo: application?.cpgeRankingTrimesterTwo,
-    nonCpgeAverageThreeBestScienceGrades:
-      application?.nonCpgeAverageThreeBestScienceGrades,
-    nonCpgeAverageScienceGrades: application?.nonCpgeAverageScienceGrades,
-    nonCpgeOverallAverage: application?.nonCpgeOverallAverage,
+    educationLevel: educationLevelLabels[application?.educationLevel],
+    educationField: educationFieldLabels[application?.educationField],
+    highschool: application?.highschool,
+    averageGrade: application?.averageGrade,
+    mathAverageGrade: application?.mathAverageGrade,
+    ranking: application?.ranking,
+    mathRanking: application?.mathRanking,
+    numberOfStudentsInClass: application?.numberOfStudentsInClass,
 
     hasPreviouslyParticipated: application?.hasPreviouslyParticipated,
     previousCompetitions: application?.previousCompetitions,
-    hasPreviouslyParticipatedInMmc: application?.hasPreviouslyParticipatedInMmc,
-    previousResultsInMmc: application?.previousResultsInMmc,
+    hasPreviouslyParticipatedInMtym:
+      application?.hasPreviouslyParticipatedInMtym,
     motivations: application?.motivations,
     comments: application?.comments,
 
@@ -138,6 +115,10 @@ export const rowFactory = (applications: any[], configService) => {
       text: 'link',
       hyperlink: `https://${awsBucketName}.s3.${awsBucketRegion}.amazonaws.com/${application?.regulationsUrl}`,
     },
+    parentalAuthorizationUrl: {
+      text: 'link',
+      hyperlink: `https://${awsBucketName}.s3.${awsBucketRegion}.amazonaws.com/${application?.parentalAuthorizationUrl}`,
+    },
 
     status: application?.status?.status,
   }));
@@ -145,7 +126,7 @@ export const rowFactory = (applications: any[], configService) => {
 
 export const styleSheet = (sheet) => {
   // personal informations style
-  for (let i = 2; i <= 11; i++) {
+  for (let i = 2; i <= 13; i++) {
     sheet.getColumn(i).fill = {
       type: 'pattern',
       pattern: 'solid',
@@ -155,7 +136,7 @@ export const styleSheet = (sheet) => {
   }
 
   // education style
-  for (let i = 12; i <= 22; i++) {
+  for (let i = 14; i <= 21; i++) {
     sheet.getColumn(i).fill = {
       type: 'pattern',
       pattern: 'solid',
@@ -165,7 +146,7 @@ export const styleSheet = (sheet) => {
   }
 
   // competition style
-  for (let i = 23; i <= 28; i++) {
+  for (let i = 22; i <= 26; i++) {
     sheet.getColumn(i).fill = {
       type: 'pattern',
       pattern: 'solid',
@@ -175,7 +156,7 @@ export const styleSheet = (sheet) => {
   }
 
   // uploads style
-  for (let i = 29; i <= 32; i++) {
+  for (let i = 27; i <= 32; i++) {
     sheet.getColumn(i).fill = {
       type: 'pattern',
       pattern: 'solid',

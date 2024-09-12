@@ -15,15 +15,42 @@ export const regionLabels = {
 } as any;
 
 export const educationLevelLabels = {
-  'bac-plus-1': 'Bac +1',
-  'bac-plus-2': 'Bac +2',
-  'bac-plus-3': 'Bac +3',
-  'bac-plus-4': 'Bac +4',
+  'tronc-commun': 'Tronc commun',
+  '1bac': '1ère année Bac',
+  '2bac': '2ème année Bac',
 } as any;
 
-export const educationProgramLabels = {
-  cpge: 'CPGE',
-  university: 'University',
-  'engineering-school-post-bac': 'Engineering School post BAC',
-  'engineering-school-post-cpge': 'Engineering School post CPGE',
+export const educationFieldLabels = {
+  'tc-sciences': 'TC sciences',
+  'tc-technologique': 'TC technologique',
+  '1bac-sciences-economiques-et-gestion':
+    '1BAC Sciences Economiques et Gestion',
+  '1bac-arts-appliques': '1BAC Arts Appliqués',
+  '1bac-sciences-experimentales': '1BAC Sciences Expérimentales',
+  '1bac-sciences-mathematiques': '1BAC Sciences Mathématiques',
+  '1bac-sciences-et-technologies-electriques':
+    '1BAC Sciences et Technologies Electriques',
+  '1bac-sciences-et-technologies-mecaniques':
+    '1BAC Sciences et Technologies Mécaniques',
+  '2bac-sciences-economiques': '2BAC Sciences Economiques',
+  '2bac-sciences-de-gestion-et-comptabilite':
+    '2BAC Sciences de Gestion et Comptabilité',
+  '2bac-arts-appliques': '2BAC Arts Appliqués',
+  '2bac-sciences-de-la-vie-et-de-la-terre':
+    '2BAC Sciences de la Vie et de la Terre',
+  '2bac-sciences-physique-chimie': '2BAC Sciences Physique Chimie',
+  '2bac-sciences-agronomiques': '2BAC Sciences Agronomiques',
+  '2bac-sciences-mathematiques-a': '2BAC Sciences Mathématiques A',
+  '2bac-sciences-mathematiques-b': '2BAC Sciences Mathématiques B',
+  '2bac-sciences-et-technologies-electrique':
+    '2BAC Sciences et Technologies Electrique',
+  '2bac-sciences-et-technologies-mecanique':
+    '2BAC Sciences et Technologies Mécanique',
+  autre: 'Autre',
+} as any;
+
+export const relationshipWithGuardianLabels = {
+  father: 'Père',
+  mother: 'Mère',
+  guardian: 'Tuteur',
 } as any;
