@@ -61,6 +61,10 @@ export class TeamService {
     if (!user || !team) {
       throw new NotFoundException('The user or team does not exist');
     }
+    if (team.users.length >= 5) {
+      throw new NotFoundException('This team can not have more that 5 members');
+    }
+
     team.users = [...team.users, user];
     await this.teamRepository.save(team);
     return;
