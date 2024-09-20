@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateTeamDto } from '../dto/create-team.dto';
 import { UpdateTeamDto } from '../dto/update-team.dto';
 import { Team } from '../entities/team.entity';
@@ -6,6 +11,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserService } from 'src/modules/user/services/user.service';
 import { SerializedUser } from 'src/modules/user/entities/serialized-user';
+import { TeamAccessCodeService } from './team-access-code.service';
 
 @Injectable()
 export class TeamService {
@@ -13,6 +19,8 @@ export class TeamService {
     private readonly userService: UserService,
     @InjectRepository(Team)
     private teamRepository: Repository<Team>,
+    @Inject(forwardRef(() => TeamAccessCodeService))
+    private teamAccessCodeService: TeamAccessCodeService,
   ) {}
 
   async create(createTeamDto: CreateTeamDto, userId: number) {
@@ -100,7 +108,11 @@ export class TeamService {
     return this.teamRepository.update({ id }, updateTeamDto);
   }
 
-  remove(id: number) {
+  async delete(id: number) {
+    const deleteTeamAccessCodes = await this.teamAccessCodeService.deleteByTeam(
+      id,
+    );
+    console.log('deleteTeamAccessCodes', deleteTeamAccessCodes);
     return this.teamRepository.delete({ id });
   }
 }

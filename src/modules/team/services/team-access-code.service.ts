@@ -1,4 +1,9 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  forwardRef,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TeamAccessCode } from '../entities/team-access-code.entity';
@@ -10,7 +15,8 @@ export class TeamAccessCodeService {
   constructor(
     @InjectRepository(TeamAccessCode)
     private readonly teamAccessCodeRepository: Repository<TeamAccessCode>,
-    private readonly teamService: TeamService,
+    @Inject(forwardRef(() => TeamService))
+    private teamService: TeamService,
   ) {}
 
   async create(teamId: number) {
@@ -44,7 +50,21 @@ export class TeamAccessCodeService {
       .getOne();
   }
 
-  async delete(id: number) {
+  async deleteById(id: number) {
     return this.teamAccessCodeRepository.delete({ id });
+  }
+
+  async deleteByTeam(teamId: number) {
+    const team = await this.teamService.findOneById(teamId);
+    if (!team) {
+      throw new ForbiddenException("The team doesn't exist");
+    }
+
+    return this.teamAccessCodeRepository
+      .createQueryBuilder('teamAccessCode')
+      .leftJoin('teamAccessCode.team', 'team')
+      .delete()
+      .andWhere('team.id = :teamId', { teamId })
+      .execute();
   }
 }

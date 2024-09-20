@@ -46,7 +46,7 @@ export class TeamAccessCodeController {
   }
 
   @Delete(':id')
-  async delete(@Param('id', ParseIntPipe) id: number) {
-    return this.teamAccessCodeService.delete(+id);
+  async deleteById(@Param('id', ParseIntPipe) id: number) {
+    return this.teamAccessCodeService.deleteById(+id);
   }
 }
