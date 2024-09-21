@@ -90,17 +90,28 @@ export class ApplicationController {
       throw new ForbiddenException('User does not exist');
     }
 
-    const userApplication = user?.application;
-    if (userApplication) {
-      throw new ForbiddenException(
-        'This user already have a submitted an application',
+    let application = user?.application;
+    if (application) {
+      // update
+      await this.applicationService.update(
+        application?.id,
+        createApplicationDto,
+      );
+
+      const applicationStatus = application?.status;
+      if (applicationStatus.status === 'NOTIFIED') {
+        this.applicationStatusService.update(applicationStatus?.id, {
+          ...applicationStatus,
+          status: 'UPDATED',
+        });
+      }
+    } else {
+      // create
+      application = await this.applicationService.create(
+        createApplicationDto,
+        userId,
       );
     }
-
-    const application = await this.applicationService.create(
-      createApplicationDto,
-      userId,
-    );
 
     return {
       id: application.id,
