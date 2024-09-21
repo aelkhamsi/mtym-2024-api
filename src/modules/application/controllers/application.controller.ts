@@ -38,18 +38,12 @@ export class ApplicationController {
   @UseGuards(RolesGuard)
   @Roles(ADMIN_ROLE)
   async findByUserId(@Param('id', ParseIntPipe) id: number) {
-    const user = await this.userService.findOneById(id);
-    if (!user) {
+    const application = await this.applicationService.findOneByUserId(+id);
+    if (!application) {
       throw new NotFoundException();
     }
 
-    const applicationStatus =
-      await this.applicationStatusService.findOneByApplicationId(
-        user.application.id,
-      );
-
-    user.application.status = applicationStatus;
-    return new SerializedApplication(user.application);
+    return new SerializedApplication(application);
   }
 
   @Get()
