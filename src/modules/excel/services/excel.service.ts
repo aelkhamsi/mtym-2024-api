@@ -1,18 +1,15 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Workbook } from 'exceljs';
-import { ApplicationService } from 'src/modules/application/services/application.service';
 import * as tmp from 'tmp';
 import { ConfigService } from '@nestjs/config';
-import {
-  columns as applicationColumns,
-  rowFactory as applicationRowFactory,
-  styleSheet as styleApplicationsSheet,
-} from '../config/applications.excel';
+import { columns, rowFactory, styleSheet } from '../config/applications.excel';
+import { UserService } from 'src/modules/user/services/user.service';
+import { groupBy } from 'src/utils/array';
 
 @Injectable()
 export class ExcelService {
   constructor(
-    private readonly applicationService: ApplicationService,
+    private readonly userService: UserService,
     private readonly configService: ConfigService,
   ) {}
 
@@ -21,19 +18,23 @@ export class ExcelService {
     const sheet = workbook.addWorksheet('applications');
 
     // colums
-    sheet.columns = applicationColumns;
+    sheet.columns = columns;
 
     // rows
-    const rows = [];
-    const result = await this.applicationService.findAll();
-    const applications = applicationRowFactory(result, this.configService);
-    applications.forEach((application: any) => {
-      rows.push(Object.values(application));
-    });
+    const users = await this.userService.findAll();
+    const usersGroupByTeams = groupBy(
+      users,
+      (user) => user?.team?.id ?? 'null',
+    );
+    const rows = rowFactory(
+      Object.values(usersGroupByTeams),
+      this.configService,
+    ).map(Object.values);
+
     sheet.addRows(rows);
 
     // style
-    styleApplicationsSheet(sheet);
+    styleSheet(sheet);
 
     const file = await new Promise((resolve) => {
       tmp.file(

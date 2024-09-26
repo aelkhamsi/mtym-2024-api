@@ -1,3 +1,4 @@
+import { User } from 'src/modules/user/entities/user.entity';
 import {
   educationFieldLabels,
   educationLevelLabels,
@@ -6,7 +7,9 @@ import {
 } from '../labels';
 
 export const columns = [
-  { header: 'Id', key: 'id', width: 5 },
+  { header: 'Application Id', key: 'application-id', width: 10 },
+  { header: 'Team Id', key: 'team-id', width: 10 },
+  { header: 'Team Name', key: 'team-name', width: 20 },
   { header: 'First Name', key: 'first-name', width: 15 },
   { header: 'Last Name', key: 'last-name', width: 15 },
   { header: 'Email', key: 'email', width: 25 },
@@ -63,70 +66,103 @@ export const columns = [
   { header: 'Status', key: 'status', width: 15 },
 ];
 
-export const rowFactory = (applications: any[], configService) => {
+export const rowFactory = (usersGroupByTeams: any[], configService) => {
   const awsBucketName = configService.get('AWS_BUCKET_NAME');
   const awsBucketRegion = configService.get('AWS_BUCKET_REGION');
+  const mapGroup = (group: any[]) => {
+    const groupRows = [];
+    group.forEach((user: User) => {
+      const application = user?.application;
+      const team = user?.team;
+      if (!application) return;
 
-  return applications.map((application: any) => ({
-    id: application?.id,
-    firstName: application?.user?.firstName,
-    lastName: application?.user?.lastName,
-    email: application?.user?.email,
-    dateOfBirth: new Date(application?.dateOfBirth),
-    identityCardNumber: application?.identityCardNumber,
-    city: application?.city,
-    region: regionLabels[application?.region],
-    phoneNumber: application?.phoneNumber,
-    guardianFullName: application?.guardianFullName,
-    guardianPhoneNumber: application?.guardianPhoneNumber,
-    relationshipWithGuardian:
-      relationshipWithGuardianLabels[application?.relationshipWithGuardian],
-    specialConditions: application?.specialConditions,
+      const userData = {
+        id: application?.id,
+        teamId: team?.id,
+        teamName: team?.name,
+        firstName: user?.firstName,
+        lastName: user?.lastName,
+        email: user?.email,
+        dateOfBirth: new Date(application?.dateOfBirth),
+        identityCardNumber: application?.identityCardNumber,
+        city: application?.city,
+        region: regionLabels[application?.region],
+        phoneNumber: application?.phoneNumber,
+        guardianFullName: application?.guardianFullName,
+        guardianPhoneNumber: application?.guardianPhoneNumber,
+        relationshipWithGuardian:
+          relationshipWithGuardianLabels[application?.relationshipWithGuardian],
+        specialConditions: application?.specialConditions,
 
-    educationLevel: educationLevelLabels[application?.educationLevel],
-    educationField: educationFieldLabels[application?.educationField],
-    highschool: application?.highschool,
-    averageGrade: application?.averageGrade,
-    mathAverageGrade: application?.mathAverageGrade,
-    ranking: application?.ranking,
-    mathRanking: application?.mathRanking,
-    numberOfStudentsInClass: application?.numberOfStudentsInClass,
+        educationLevel: educationLevelLabels[application?.educationLevel],
+        educationField: educationFieldLabels[application?.educationField],
+        highschool: application?.highschool,
+        averageGrade: application?.averageGrade,
+        mathAverageGrade: application?.mathAverageGrade,
+        ranking: application?.ranking,
+        mathRanking: application?.mathRanking,
+        numberOfStudentsInClass: application?.numberOfStudentsInClass,
 
-    hasPreviouslyParticipated: application?.hasPreviouslyParticipated,
-    previousCompetitions: application?.previousCompetitions,
-    hasPreviouslyParticipatedInMtym:
-      application?.hasPreviouslyParticipatedInMtym,
-    motivations: application?.motivations,
-    comments: application?.comments,
+        hasPreviouslyParticipated: application?.hasPreviouslyParticipated,
+        previousCompetitions: application?.previousCompetitions,
+        hasPreviouslyParticipatedInMtym:
+          application?.hasPreviouslyParticipatedInMtym,
+        motivations: application?.motivations,
+        comments: application?.comments,
 
-    cnieUrl: {
-      text: 'link',
-      hyperlink: `https://${awsBucketName}.s3.${awsBucketRegion}.amazonaws.com/${application?.cnieUrl}`,
-    },
-    schoolCertificateUrl: {
-      text: 'link',
-      hyperlink: `https://${awsBucketName}.s3.${awsBucketRegion}.amazonaws.com/${application?.schoolCertificateUrl}`,
-    },
-    gradesUrl: {
-      text: 'link',
-      hyperlink: `https://${awsBucketName}.s3.${awsBucketRegion}.amazonaws.com/${application?.gradesUrl}`,
-    },
-    regulationsUrl: {
-      text: 'link',
-      hyperlink: `https://${awsBucketName}.s3.${awsBucketRegion}.amazonaws.com/${application?.regulationsUrl}`,
-    },
-    parentalAuthorizationUrl: {
-      text: 'link',
-      hyperlink: `https://${awsBucketName}.s3.${awsBucketRegion}.amazonaws.com/${application?.parentalAuthorizationUrl}`,
-    },
+        cnieUrl: {
+          text: 'link',
+          hyperlink: `https://${awsBucketName}.s3.${awsBucketRegion}.amazonaws.com/${application?.cnieUrl}`,
+        },
+        schoolCertificateUrl: {
+          text: 'link',
+          hyperlink: `https://${awsBucketName}.s3.${awsBucketRegion}.amazonaws.com/${application?.schoolCertificateUrl}`,
+        },
+        gradesUrl: {
+          text: 'link',
+          hyperlink: `https://${awsBucketName}.s3.${awsBucketRegion}.amazonaws.com/${application?.gradesUrl}`,
+        },
+        regulationsUrl: {
+          text: 'link',
+          hyperlink: `https://${awsBucketName}.s3.${awsBucketRegion}.amazonaws.com/${application?.regulationsUrl}`,
+        },
+        parentalAuthorizationUrl: {
+          text: 'link',
+          hyperlink: `https://${awsBucketName}.s3.${awsBucketRegion}.amazonaws.com/${application?.parentalAuthorizationUrl}`,
+        },
 
-    status: application?.status?.status,
-  }));
+        status: application?.status?.status,
+      };
+
+      groupRows.push(userData);
+    });
+
+    groupRows.push({});
+    return groupRows;
+  };
+
+  const rows = usersGroupByTeams.reduce((prev, current) => {
+    const groupRows = mapGroup(current);
+    prev.push(...groupRows);
+    return prev;
+  }, []);
+
+  return rows;
 };
 
 export const styleSheet = (sheet) => {
+  // team informations style
+  for (let i = 2; i <= 3; i++) {
+    sheet.getColumn(i).fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      bgColor: { argb: '05FFFE' },
+      fgColor: { argb: '05FFFE' },
+    };
+  }
+
   // personal informations style
-  for (let i = 2; i <= 13; i++) {
+  for (let i = 4; i <= 15; i++) {
     sheet.getColumn(i).fill = {
       type: 'pattern',
       pattern: 'solid',
@@ -136,7 +172,7 @@ export const styleSheet = (sheet) => {
   }
 
   // education style
-  for (let i = 14; i <= 21; i++) {
+  for (let i = 16; i <= 23; i++) {
     sheet.getColumn(i).fill = {
       type: 'pattern',
       pattern: 'solid',
@@ -146,7 +182,7 @@ export const styleSheet = (sheet) => {
   }
 
   // competition style
-  for (let i = 22; i <= 26; i++) {
+  for (let i = 24; i <= 28; i++) {
     sheet.getColumn(i).fill = {
       type: 'pattern',
       pattern: 'solid',
@@ -156,7 +192,7 @@ export const styleSheet = (sheet) => {
   }
 
   // uploads style
-  for (let i = 27; i <= 32; i++) {
+  for (let i = 29; i <= 34; i++) {
     sheet.getColumn(i).fill = {
       type: 'pattern',
       pattern: 'solid',

@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ExcelController } from './controllers/excel.controller';
 import { ExcelService } from './services/excel.service';
-import { ApplicationModule } from '../application/application.module';
+import { UserModule } from '../user/user.module';
 
 @Module({
-  imports: [ApplicationModule],
+  imports: [UserModule],
   controllers: [ExcelController],
   providers: [ExcelService],
   exports: [],
